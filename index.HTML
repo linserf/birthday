@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>妈妈，生日快乐！</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            background-color: #000;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: "华文行楷", "Microsoft YaHei", sans-serif;
+            color: white;
+            position: relative;
+        }
+
+        /* 蛋糕样式 */
+        .cake {
+            position: absolute;
+            top: 10%;
+            width: 120px;
+            height: 120px;
+            animation: rotate 10s linear infinite;
+            z-index: 1;
+        }
+
+        /* 文字容器 - 关键：固定尺寸，防止挤压 */
+        .message {
+            text-align: center;
+            z-index: 10;
+            max-width: 80%;
+            /* 预留足够的行高，防止文字重叠 */
+            line-height: 1.4; 
+        }
+
+        /* 通用行样式 - 移除了缩放动画 */
+        .message-line {
+            margin: 0;
+            padding: 0;
+            opacity: 1;
+        }
+
+        /* 第一行：您亲爱的儿子 */
+        .line1 { 
+            font-size: 1.8em; 
+            color: #ddd;
+        }
+
+        /* 第二行：王鼎霖 */
+        .line2 { 
+            font-size: 2.2em; 
+            color: #fff;
+            margin: 10px 0;
+        }
+
+        /* 第三行：祝您生日快乐 - 固定最大，不随外部缩放 */
+        .line3 { 
+            font-size: 4em; /* 固定超大字号 */
+            font-weight: bold;
+            /* 文字特效：渐变色 + 发光 */
+            background: linear-gradient(45deg, #ff6ec4, #7873f5, #00d2ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 
+                0 0 10px rgba(255, 255, 255, 0.3),
+                0 0 20px rgba(255, 255, 255, 0.2);
+            /* 应用独立的脉冲动画（只改变阴影，不改变大小） */
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        /* --- 烟花样式 --- */
+        .firework {
+            position: absolute;
+            bottom: 0;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            opacity: 0;
+        }
+
+        @keyframes fullSequence {
+            0% {
+                transform: translateY(0);
+                opacity: 0;
+                box-shadow: none;
+            }
+            30% {
+                opacity: 1;
+            }
+            50% {
+                transform: translateY(-50vh);
+                opacity: 1;
+                box-shadow: 0 0 10px 5px currentColor;
+            }
+            51% {
+                transform: translateY(-50vh);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-50vh) scale(3);
+                opacity: 0;
+                box-shadow: 0 0 60px 40px currentColor;
+            }
+        }
+
+        /* --- 蛋糕旋转 --- */
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* --- 文字脉冲动画 --- */
+        @keyframes pulse {
+            0% {
+                text-shadow: 0 0 10px rgba(255, 255, 255, 0.3), 0 0 20px rgba(255, 255, 255, 0.2);
+            }
+            50% {
+                text-shadow: 0 0 20px rgba(255, 255, 255, 0.5), 0 0 40px rgba(255, 255, 255, 0.4);
+            }
+            100% {
+                text-shadow: 0 0 10px rgba(255, 255, 255, 0.3), 0 0 20px rgba(255, 255, 255, 0.2);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <img src=cake.png alt="生日蛋糕" class="cake">
+    
+    <div class="message">
+        <div class="message-line line1">您亲爱的儿子</div>
+        <div class="message-line line2">王鼎霖</div>
+        <div class="message-line line3">祝您生日快乐！</div>
+    </div>
+
+    <script>
+        function createFirework() {
+            const colors = ['#ff00de', '#00fff7', '#ff8c00', '#ffff00', '#33ff33', '#ff33cc'];
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            const randomLeft = Math.random() * 80 + 10;
+
+            const fw = document.createElement('div');
+            fw.classList.add('firework');
+            fw.style.left = randomLeft + 'vw';
+            fw.style.color = color; 
+            fw.style.backgroundColor = color;
+            fw.style.animation = 'fullSequence 2s ease-out forwards';
+
+            document.body.appendChild(fw);
+
+            setTimeout(() => {
+                fw.remove();
+            }, 2000);
+        }
+
+        setInterval(createFirework, 800);
+        for(let i = 0; i < 5; i++) {
+            setTimeout(createFirework, i * 300);
+        }
+    </script>
+
+</body>
+</html>
